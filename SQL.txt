@@ -1,0 +1,44 @@
+
+select * from Comentarios;
+
+--Veamos el uso de CASE y EXEC
+
+-- CASE con evaluacion directa
+select 
+	DAY(creacion) 'DIA', 
+	CASE DAY(creacion)
+		WHEN 19 THEN 'TODAY'
+		WHEN 20 THEN 'TOMORROW' 
+		ELSE 'YESTERDAY'
+	END 'VALOR'
+from comentarios;
+
+--CASE con evaluacion por condicion
+
+select 
+	DAY(creacion) 'DIA', 
+	CASE 
+		WHEN DAY(creacion) = 19 THEN 'TODAY'
+		WHEN DAY(creacion) > 19 THEN 'TOMORROW' 
+		ELSE 'YESTERDAY'
+	END 'VALOR'
+from comentarios;
+
+--Si queremos evaluacion un querie por texto utilizaremos EXEC
+
+DECLARE 
+	@SQLQUERIE varchar(200) = 'Select commentario, creacion, status from comentarios;';
+
+	SET @SQLQUERIE = '
+		select 
+			DAY(creacion) ''DIA'', 
+			CASE 
+				WHEN DAY(creacion) = 19 THEN ''TODAY''
+				WHEN DAY(creacion) > 19 THEN ''TOMORROW'' 
+				ELSE ''YESTERDAY''
+			END ''VALOR''
+		from comentarios;
+	';
+
+EXEC (@SQLQUERIE);
+
